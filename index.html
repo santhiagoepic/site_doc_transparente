@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Doc Transparente — Assessoria em Transparência Pública</title>
+  <meta name="description" content="Publicação e gestão de documentos em portais de transparência de prefeituras e câmaras. Atualização contínua, usabilidade e resultados comprovados." />
+  <meta property="og:title" content="Doc Transparente — Assessoria em Transparência Pública" />
+  <meta property="og:description" content="Atualizamos e gerimos seu portal institucional e da transparência com excelência e agilidade." />
+  <meta property="og:type" content="website" />
+  <meta name="theme-color" content="#0f4c5c" />
+
+  <style>
+    /* ========= PALHETA (ajustada às cores do logo) ========= */
+    :root{
+      --brand-900:#0b2e3b;   /* muito escuro */
+      --brand-800:#0f3d4d;
+      --brand-700:#0f4c5c;   /* teal principal */
+      --brand-600:#165f6e;
+      --brand-500:#1d7874;   /* teal esverdeado (secundária) */
+      --brand-100:#eaf4f5;   /* fundo claro */
+      --ink-900:#101418;
+      --ink-700:#2b343c;
+      --ink-500:#5b6b75;
+      --accent:#ffd166;      /* dourado para CTAs/destaques */
+      --ok:#10b981;          /* verde sutil para feedbacks */
+      --danger:#ef4444;
+      --radius:14px;
+      --shadow:0 10px 30px rgba(0,0,0,.15);
+    }
+
+    /* ========= RESET / BASE ========= */
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family: system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Arial,sans-serif;
+      color:var(--ink-900);
+      background: radial-gradient(1200px 600px at 10% -10%, rgba(13,76,92,.12), transparent 60%),
+                  radial-gradient(1000px 500px at 110% 10%, rgba(29,120,116,.10), transparent 60%),
+                  var(--brand-100);
+      line-height:1.6;
+    }
+    img{max-width:100%;display:block}
+    .container{max-width:1180px;margin:auto;padding:0 22px}
+
+    /* ========= NAV ========= */
+    .nav{
+      position:sticky; top:0; z-index:50;
+      backdrop-filter:saturate(180%) blur(10px);
+      background:rgba(255,255,255,.75);
+      border-bottom:1px solid rgba(15,76,92,.08);
+    }
+    .nav-inner{display:flex;align-items:center;justify-content:space-between;padding:10px 0}
+    .brand{display:flex;align-items:center;gap:12px}
+    .brand img{width:160px;height:auto}
+    .menu{display:flex;gap:22px}
+    .menu a{
+      text-decoration:none;color:var(--ink-700);font-weight:600;
+      padding:8px 10px;border-radius:10px;transition:.25s;
+    }
+    .menu a:hover{color:var(--brand-700);background:rgba(15,76,92,.08)}
+    .cta{
+      background:linear-gradient(135deg,var(--accent),#ffc64d);
+      color:#1f2937;border:none;padding:10px 16px;border-radius:12px;
+      font-weight:800;cursor:pointer;box-shadow:0 8px 20px rgba(255,209,102,.35);
+      transition:transform .2s ease, box-shadow .2s ease;
+    }
+    .cta:hover{transform:translateY(-2px);box-shadow:0 12px 26px rgba(255,209,102,.45)}
+    .burger{display:none;gap:8px;flex-direction:column}
+    .burger span{width:26px;height:3px;background:var(--brand-700);border-radius:4px}
+
+    @media (max-width:860px){
+      .menu{display:none;position:absolute;left:0;right:0;top:64px;background:#fff;padding:14px 22px;border-bottom:1px solid rgba(15,76,92,.1)}
+      .menu.open{display:flex;flex-direction:column}
+      .burger{display:flex}
+    }
+
+    /* ========= HERO ========= */
+    .hero{
+      position:relative;overflow:hidden;
+      background: linear-gradient(120deg, var(--brand-700) 0%, var(--brand-600) 45%, var(--brand-500) 100%);
+      color:#fff;
+    }
+    .hero-wrap{display:grid;grid-template-columns:1.2fr .8fr; gap:30px; padding:60px 0}
+    .hero h1{
+      font-size:clamp(28px,3.4vw,46px); line-height:1.12; margin:8px 0 14px;
+      text-shadow:0 4px 22px rgba(0,0,0,.25);
+    }
+    .hero p{color:#e9f6f7;max-width:56ch}
+    .hero .buttons{display:flex;gap:12px;margin-top:14px;flex-wrap:wrap}
+    .hero .ghost{
+      background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.25);
+      padding:10px 16px;border-radius:12px;font-weight:700;text-decoration:none;transition:.25s;
+    }
+    .hero .ghost:hover{background:rgba(255,255,255,.22)}
+    .hero-art{
+      position:relative;min-height:290px;border-radius:var(--radius);
+      background: radial-gradient(120px 120px at 18% 28%, rgba(255,255,255,.22), transparent),
+                  radial-gradient(140px 140px at 78% 58%, rgba(255,255,255,.18), transparent),
+                  rgba(255,255,255,.06);
+      box-shadow:var(--shadow); border:1px solid rgba(255,255,255,.18);
+      display:flex;align-items:center;justify-content:center;
+    }
+    .diamond{
+      display:inline-flex;align-items:center;gap:12px;background:rgba(255,255,255,.12);
+      border:1px solid rgba(255,255,255,.25);padding:10px 14px;border-radius:999px;
+      position:absolute;bottom:18px;right:18px;backdrop-filter:blur(6px);
+      animation:pop .6s ease-out .2s both;
+    }
+    .sparkle{filter:drop-shadow(0 0 10px rgba(255,209,102,.9)); animation:shine 2.8s linear infinite}
+    @keyframes shine{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}
+    @keyframes pop{from{transform:scale(.85);opacity:0}to{transform:scale(1);opacity:1}}
+
+    /* ========= SEÇÕES ========= */
+    section{padding:72px 0}
+    .section-title{
+      font-size:clamp(22px,2.6vw,36px); margin:0 0 12px; color:var(--brand-800)
+    }
+    .lead{color:var(--ink-700); max-width:70ch}
+
+    .grid-3{display:grid; grid-template-columns:repeat(3,1fr); gap:22px}
+    @media (max-width:980px){.grid-3{grid-template-columns:1fr 1fr}}
+    @media (max-width:620px){.grid-3{grid-template-columns:1fr}}
+
+    .card{
+      background:#fff;border-radius:var(--radius);padding:18px 18px 20px;
+      box-shadow:var(--shadow); border:1px solid rgba(15,76,92,.08);
+      transition:transform .25s ease, box-shadow .25s ease;
+    }
+    .card:hover{transform:translateY(-6px); box-shadow:0 14px 40px rgba(0,0,0,.18)}
+    .card h3{margin:10px 0 8px; color:var(--brand-700)}
+    .icon{
+      width:44px;height:44px;border-radius:10px;display:grid;place-items:center;
+      background:linear-gradient(135deg,rgba(15,76,92,.08),rgba(29,120,116,.12)); color:var(--brand-700)
+    }
+
+    /* Processo */
+    .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+    @media (max-width:980px){.steps{grid-template-columns:repeat(2,1fr)}}
+    @media (max-width:620px){.steps{grid-template-columns:1fr}}
+    .step{position:relative;padding:18px;border-radius:var(--radius);background:#fff;border:1px solid rgba(15,76,92,.08);box-shadow:var(--shadow)}
+    .badge{display:inline-block;background:var(--brand-700);color:#fff;border-radius:999px;font-size:12px;font-weight:800;padding:6px 10px}
+
+    /* Counters */
+    .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+    @media (max-width:980px){.stats{grid-template-columns:repeat(2,1fr)}}
+    @media (max-width:620px){.stats{grid-template-columns:1fr}}
+    .stat{background:#fff;border-radius:var(--radius);padding:22px;border:1px solid rgba(15,76,92,.08);box-shadow:var(--shadow);text-align:center}
+    .stat .num{font-size:clamp(26px,3.2vw,40px);font-weight:900;color:var(--brand-700)}
+    .muted{color:var(--ink-500)}
+
+    /* Clientes / Depoimento */
+    .clients{display:grid;grid-template-columns:1.2fr .8fr; gap:22px}
+    @media (max-width:900px){.clients{grid-template-columns:1fr}}
+    .quote{background:linear-gradient(180deg, #ffffff, #f4fafb);border-left:6px solid var(--brand-700);padding:22px;border-radius:var(--radius);box-shadow:var(--shadow)}
+
+    /* Contato */
+    .contact{
+      display:grid;grid-template-columns:1fr .9fr; gap:26px; align-items:start
+    }
+    @media (max-width:960px){.contact{grid-template-columns:1fr}}
+    .form{
+      background:#fff;padding:18px;border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid rgba(15,76,92,.08)
+    }
+    .row{display:grid;grid-template-columns:1fr 1fr; gap:12px}
+    @media (max-width:620px){.row{grid-template-columns:1fr}}
+    label{display:block;font-weight:700;margin:8px 0 6px;color:var(--brand-800)}
+    input,textarea{
+      width:100%;border:1px solid #d8e4e6;background:#fbfeff;padding:12px;border-radius:10px;font:inherit;
+    }
+    textarea{min-height:120px;resize:vertical}
+    .btn{
+      background:linear-gradient(135deg,var(--brand-700),var(--brand-500));
+      color:#fff;border:none;padding:12px 18px;border-radius:12px;font-weight:800;cursor:pointer;
+      box-shadow:0 10px 24px rgba(15,76,92,.35); transition:transform .2s ease, box-shadow .2s ease;
+    }
+    .btn:hover{transform:translateY(-2px);box-shadow:0 14px 28px rgba(15,76,92,.45)}
+    .whatsapp{
+      background:linear-gradient(135deg,#25d366,#1ebe57); box-shadow:0 10px 24px rgba(37,211,102,.35)
+    }
+
+    /* Footer */
+    footer{
+      background:linear-gradient(180deg, var(--brand-800), var(--brand-900));
+      color:#cfe7ea; padding:28px 0; text-align:center; margin-top:30px
+    }
+
+    /* Reveals */
+    .reveal{opacity:0; transform:translateY(16px); transition:opacity .7s ease, transform .7s ease}
+    .reveal.on{opacity:1; transform:none}
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <div class="nav">
+    <div class="container nav-inner">
+      <a class="brand" href="#top" aria-label="Doc Transparente - Início">
+        <img src="logo.png" alt="Logo Doc Transparente">
+      </a>
+      <nav class="menu" id="menu">
+        <a href="#sobre">Sobre</a>
+        <a href="#servicos">Serviços</a>
+        <a href="#processo">Processo</a>
+        <a href="#mvv">Missão & Valores</a>
+        <a href="#resultados">Resultados</a>
+        <a href="#clientes">Clientes</a>
+        <a href="#contato">Contato</a>
+      </nav>
+      <button class="cta" onclick="document.getElementById('contato').scrollIntoView({behavior:'smooth'})">Fale com a gente</button>
+      <button class="burger" aria-label="Abrir menu" aria-expanded="false" aria-controls="menu" id="burger">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <header class="hero" id="top">
+    <div class="container hero-wrap">
+      <div>
+        <p class="badge" style="background:rgba(255,255,255,.22);border:1px solid rgba(255,255,255,.35)">Especialistas em Portais de Transparência</p>
+        <h1>Transparência que gera confiança para prefeituras e câmaras</h1>
+        <p>Publicação e gestão completa de documentos oficiais, com atualização contínua, padronização e foco total na usabilidade — para que o cidadão encontre o que precisa em poucos cliques.</p>
+        <div class="buttons">
+          <a class="ghost" href="#servicos">Conheça os serviços</a>
+          <a class="ghost" href="#resultados">Veja resultados</a>
+        </div>
+      </div>
+
+      <div class="hero-art">
+        <!-- Ícone / ilustração inline -->
+        <svg width="170" height="170" viewBox="0 0 256 256" fill="none" aria-hidden="true">
+          <rect x="22" y="22" width="140" height="180" rx="12" stroke="white" stroke-opacity=".9" stroke-width="8"/>
+          <rect x="40" y="56" width="104" height="16" rx="8" fill="white" fill-opacity=".9"/>
+          <rect x="40" y="92" width="104" height="16" rx="8" fill="white" fill-opacity=".85"/>
+          <rect x="40" y="128" width="84" height="16" rx="8" fill="white" fill-opacity=".8"/>
+          <circle cx="196" cy="162" r="42" stroke="white" stroke-width="10" stroke-opacity=".9"/>
+          <line x1="226" y1="192" x2="248" y2="214" stroke="white" stroke-width="12" stroke-linecap="round" />
+        </svg>
+        <div class="diamond">
+          <svg class="sparkle" width="22" height="22" viewBox="0 0 24 24" fill="#ffd166" aria-hidden="true">
+            <path d="M12 2l2.2 5.1L19 9.2l-4.1 2 1.1 4.6L12 13.9 8 15.8 9.1 11 5 9.2l4.8-2.1L12 2z"/>
+          </svg>
+          <strong>Selo Diamante</strong>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- SOBRE -->
+  <section id="sobre" class="container reveal">
+    <h2 class="section-title">Sobre a Doc Transparente</h2>
+    <p class="lead">Somos uma assessoria especializada em <strong>publicação e gestão de conteúdo</strong> para portais institucionais e de transparência. Cuidamos do fluxo completo — do recebimento e validação ao versionamento e publicação — elevando a qualidade da prestação de contas e a experiência do cidadão.</p>
+  </section>
+
+  <!-- SERVIÇOS -->
+  <section id="servicos">
+    <div class="container">
+      <h2 class="section-title">Serviços</h2>
+      <p class="lead">Soluções sob medida para sua prefeitura ou câmara municipal.</p>
+      <div class="grid-3">
+        <div class="card reveal">
+          <div class="icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 3h14a2 2 0 0 1 2 2v13l-4-3H6a2 2 0 0 1-2-2V3z"/></svg>
+          </div>
+          <h3>Atualização Contínua</h3>
+          <p>Publicação diária de diários oficiais, atos, relatórios e demais documentos — com organização por data, tipo e secretaria.</p>
+        </div>
+        <div class="card reveal">
+          <div class="icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5h18v2H3zm0 6h12v2H3zm0 6h18v2H3z"/></svg>
+          </div>
+          <h3>Padronização & Usabilidade</h3>
+          <p>Estruturas de navegação claras, busca facilitada e arquivos nomeados de forma consistente, reduzindo atritos para o cidadão.</p>
+        </div>
+        <div class="card reveal">
+          <div class="icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 1 1-7.07 2.93A10 10 0 0 1 12 2zm-1 5h2v6h-2zm0 8h2v2h-2z"/></svg>
+          </div>
+          <h3>Melhorias Técnicas</h3>
+          <p>Otimizações de performance, acessibilidade e SEO para portais mais rápidos, modernos e fáceis de manter.</p>
+        </div>
+        <div class="card reveal">
+          <div class="icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 7l5 10H7z"/></svg>
+          </div>
+          <h3>Monitoramento & Relatórios</h3>
+          <p>Dashboards e relatórios periódicos de publicações, com indicadores de atualização e evidências de entrega.</p>
+        </div>
+        <div class="card reveal">
+          <div class="icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 6h16v12H4z"/><path d="M9 10h6v2H9z" fill="#fff"/></svg>
+          </div>
+          <h3>Higienização de Acervo</h3>
+          <p>Revisão de arquivos, correção de duplicidades, organização de pastas e padronização de nomenclaturas.</p>
+        </div>
+        <div class="card reveal">
+          <div class="icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 12l8-5v10l-8 5-8-5V7z"/></svg>
+          </div>
+          <h3>Capacitação</h3>
+          <p>Treinamos equipes internas para manter o portal atualizado com boas práticas e fluxos eficientes.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESSO -->
+  <section id="processo" class="container reveal">
+    <h2 class="section-title">Nosso Processo</h2>
+    <div class="steps">
+      <div class="step"><span class="badge">1. Coleta</span><p>Recebemos os documentos em canais definidos (e-mail, drive, protocolo) com checklist de integridade.</p></div>
+      <div class="step"><span class="badge">2. Validação</span><p>Checagens de formato, datas, assinaturas/portarias e classificação correta antes da publicação.</p></div>
+      <div class="step"><span class="badge">3. Publicação</span><p>Subida organizada no portal, com metadados, versões e trilha de atualização.</p></div>
+      <div class="step"><span class="badge">4. Auditoria</span><p>Relatórios e evidências de publicação, além de ajustes contínuos de usabilidade.</p></div>
+    </div>
+  </section>
+
+  <!-- MISSÃO / VISÃO / VALORES -->
+  <section id="mvv">
+    <div class="container">
+      <h2 class="section-title">Missão, Visão e Valores</h2>
+      <div class="grid-3">
+        <div class="card reveal">
+          <h3>Missão</h3>
+          <p>Facilitar o acesso à informação pública com precisão, agilidade e clareza, fortalecendo a confiança entre administração e cidadãos.</p>
+        </div>
+        <div class="card reveal">
+          <h3>Visão</h3>
+          <p>Ser referência nacional em soluções de transparência digital para governos locais, unindo excelência operacional e inovação responsável.</p>
+        </div>
+        <div class="card reveal">
+          <h3>Valores</h3>
+          <ul style="padding-left:18px; margin:0">
+            <li>Ética e Integridade</li>
+            <li>Transparência Radical</li>
+            <li>Excelência e Agilidade</li>
+            <li>Foco no Cidadão</li>
+            <li>Segurança da Informação</li>
+            <li>Inovação Contínua</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESULTADOS (Counters) -->
+  <section id="resultados" class="container reveal">
+    <h2 class="section-title">Resultados em Números</h2>
+    <p class="lead">Indicadores que refletem nosso compromisso com qualidade e consistência.</p>
+    <div class="stats">
+      <div class="stat"><div class="num" data-target="1">0</div><div class="muted">Selo Diamante</div></div>
+      <div class="stat"><div class="num" data-target="2500">0</div><div class="muted">Documentos publicados</div></div>
+      <div class="stat"><div class="num" data-target="12">0</div><div class="muted">Órgãos atendidos</div></div>
+      <div class="stat"><div class="num" data-target="98">0</div><div class="muted">Índice de atualização (%)</div></div>
+    </div>
+  </section>
+
+  <!-- CLIENTES / DEPOIMENTO -->
+  <section id="clientes">
+    <div class="container clients">
+      <div class="card reveal">
+        <h3 style="margin-top:0;color:var(--brand-700)">Clientes & Parcerias</h3>
+        <ul style="padding-left:18px;margin:10px 0 0">
+          <li><strong>Prefeitura parceira com Selo Diamante</strong> — reconhecimento pela excelência alcançada em conjunto.</li>
+          <li><strong>Câmara Municipal de São Miguel do Tocantins</strong> — gestão e atualização contínua do portal institucional e da transparência.</li>
+          <li>Outras prefeituras e câmaras em expansão — modelo replicável e eficiente.</li>
+        </ul>
+      </div>
+      <blockquote class="quote reveal">
+        <p style="margin:0 0 8px">“A Doc Transparente transformou nosso portal: conteúdo organizado, navegação mais simples e atualizações constantes.”</p>
+        <cite style="color:var(--ink-500)">— Gestão Municipal</cite>
+      </blockquote>
+    </div>
+  </section>
+
+  <!-- CONTATO -->
+  <section id="contato" class="container reveal">
+    <h2 class="section-title">Fale com a gente</h2>
+    <div class="contact">
+      <div class="form">
+        <div class="row">
+          <div>
+            <label for="nome">Nome</label>
+            <input id="nome" type="text" placeholder="Seu nome" />
+          </div>
+          <div>
+            <label for="orgao">Órgão / Entidade</label>
+            <input id="orgao" type="text" placeholder="Prefeitura, Câmara, etc." />
+          </div>
+        </div>
+        <label for="email">E-mail</label>
+        <input id="email" type="email" placeholder="seuemail@org.br" />
+        <label for="msg">Mensagem</label>
+        <textarea id="msg" placeholder="Conte rapidamente sua necessidade"></textarea>
+        <div style="display:flex;gap:10px;margin-top:12px;flex-wrap:wrap">
+          <button class="btn" onclick="enviarEmail()">Enviar por E-mail</button>
+          <a class="btn whatsapp" href="https://wa.me/5563984207027?text=Ol%C3%A1%20Doc%20Transparente!%20Quero%20falar%20sobre%20o%20portal%20da%20transpar%C3%AAncia." target="_blank" rel="noopener">Chamar no WhatsApp</a>
+        </div>
+        <p style="margin-top:10px" class="muted">
+          Ou entre em contato diretamente:<br>
+          <strong>E-mail:</strong> <a href="mailto:doctransparencia97@gmail.com">doctransparencia97@gmail.com</a> &nbsp;|&nbsp;
+          <strong>Telefone:</strong> <a href="tel:+5563984207027">(63) 98420-7027</a>
+        </p>
+      </div>
+
+      <div class="card reveal">
+        <h3 style="margin-top:0;color:var(--brand-700)">Por que nos escolher?</h3>
+        <ul style="padding-left:18px;margin:0">
+          <li>Foco total em portais de transparência.</li>
+          <li>Entrega veloz e organização impecável.</li>
+          <li>Atendimento próximo e solução sob medida.</li>
+          <li>Resultados reconhecidos (Selo Diamante).</li>
+        </ul>
+        <hr style="margin:16px 0;border:none;border-top:1px solid rgba(15,76,92,.12)">
+        <p class="muted">&copy; <span id="year"></span> Doc Transparente — CNPJ: 59.725.321/0001-04</p>
+        <p class="muted">“Transparência que gera confiança.”</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <p>&copy; <span id="year2"></span> Doc Transparente — Assessoria em Transparência Pública</p>
+    </div>
+  </footer>
+
+  <script>
+    // Menu mobile
+    const burger = document.getElementById('burger');
+    const menu = document.getElementById('menu');
+    burger?.addEventListener('click', () => {
+      const open = menu.classList.toggle('open');
+      burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+
+    // Ano dinâmico
+    const y = new Date().getFullYear();
+    document.getElementById('year').textContent = y;
+    document.getElementById('year2').textContent = y;
+
+    // Reveal on scroll
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting){ e.target.classList.add('on'); io.unobserve(e.target); }
+      });
+    }, {threshold:.12});
+    document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+    // Contadores
+    const counters = document.querySelectorAll('.num');
+    const runCounter = (el)=>{
+      const target = +el.dataset.target;
+      const speed = 18; // ms
+      let curr = 0;
+      const step = Math.max(1, Math.ceil(target/110));
+      const tick = ()=> {
+        curr += step;
+        if(curr >= target) { el.textContent = target; }
+        else { el.textContent = curr; setTimeout(tick, speed); }
+      };
+      tick();
+    };
+    const io2 = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{ if(e.isIntersecting){ runCounter(e.target.querySelector('.num')); io2.unobserve(e.target); }});
+    }, {threshold:.2});
+    document.querySelectorAll('.stat').forEach(s=>io2.observe(s));
+
+    // Enviar "formulário" por e-mail (mailto com preenchimento)
+    function enviarEmail(){
+      const nome = encodeURIComponent(document.getElementById('nome').value || '');
+      const org = encodeURIComponent(document.getElementById('orgao').value || '');
+      const email = encodeURIComponent(document.getElementById('email').value || '');
+      const msg = encodeURIComponent(document.getElementById('msg').value || '');
+      const assunto = `Contato — Doc Transparente`;
+      const corpo =
+        `Nome: ${decodeURIComponent(nome)}%0D%0A`+
+        `Órgão: ${decodeURIComponent(org)}%0D%0A`+
+        `E-mail: ${decodeURIComponent(email)}%0D%0A%0D%0A`+
+        `Mensagem:%0D%0A${decodeURIComponent(msg)}`;
+      window.location.href = `mailto:doctransparencia97@gmail.com?subject=${encodeURIComponent(assunto)}&body=${encodeURIComponent(corpo)}`;
+    }
+    window.enviarEmail = enviarEmail;
+  </script>
+</body>
+</html>
