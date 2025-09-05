@@ -11,148 +11,143 @@
   <meta name="theme-color" content="#0f4c5c" />
 
   <style>
-    /* ========= PALHETA (ajustada às cores do logo) ========= */
+    /* ========= Paleta ========= */
     :root{
-      --brand-900:#0b2e3b;   /* muito escuro */
-      --brand-800:#0f3d4d;
-      --brand-700:#0f4c5c;   /* teal principal */
-      --brand-600:#165f6e;
-      --brand-500:#1d7874;   /* teal esverdeado (secundária) */
-      --brand-100:#eaf4f5;   /* fundo claro */
-      --ink-900:#101418;
-      --ink-700:#2b343c;
-      --ink-500:#5b6b75;
-      --accent:#ffd166;      /* dourado para CTAs/destaques */
-      --ok:#10b981;          /* verde sutil para feedbacks */
-      --danger:#ef4444;
-      --radius:14px;
-      --shadow:0 10px 30px rgba(0,0,0,.15);
+      --nav-h:64px; /* altura nav desktop */
+      --brand-900:#0b2e3b; --brand-800:#0f3d4d; --brand-700:#0f4c5c;
+      --brand-600:#165f6e; --brand-500:#1d7874; --brand-100:#eaf4f5;
+      --ink-900:#101418; --ink-700:#2b343c; --ink-500:#5b6b75;
+      --accent:#ffd166; --radius:14px; --shadow:0 10px 30px rgba(0,0,0,.15);
     }
 
-    /* ========= RESET / BASE ========= */
+    /* ========= Reset/Base ========= */
     *{box-sizing:border-box}
     html{scroll-behavior:smooth}
     body{
-      margin:0;
-      font-family: system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Arial,sans-serif;
+      margin:0; font-family: system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Arial,sans-serif;
       color:var(--ink-900);
-      background: radial-gradient(1200px 600px at 10% -10%, rgba(13,76,92,.12), transparent 60%),
-                  radial-gradient(1000px 500px at 110% 10%, rgba(29,120,116,.10), transparent 60%),
-                  var(--brand-100);
+      background:
+        radial-gradient(1200px 600px at 10% -10%, rgba(13,76,92,.12), transparent 60%),
+        radial-gradient(1000px 500px at 110% 10%, rgba(29,120,116,.10), transparent 60%),
+        var(--brand-100);
       line-height:1.6;
     }
+    body.no-scroll{overflow:hidden}
     img{max-width:100%;display:block}
     .container{max-width:1180px;margin:auto;padding:0 22px}
+    a{color:inherit}
 
     /* ========= NAV ========= */
     .nav{
-      position:sticky; top:0; z-index:100;
+      position:sticky; top:0; z-index:200;
       backdrop-filter:saturate(180%) blur(10px);
-      background:rgba(255,255,255,.75);
+      background:rgba(255,255,255,.86);
       border-bottom:1px solid rgba(15,76,92,.08);
     }
-    .nav-inner{display:flex;align-items:center;justify-content:space-between;padding:10px 0}
+    .nav-inner{
+      height:var(--nav-h);
+      display:flex; align-items:center; justify-content:space-between;
+    }
     .brand{display:flex;align-items:center;gap:12px}
     .brand img{width:170px;height:auto}
+
+    /* menu desktop */
     .menu{display:flex;gap:22px}
     .menu a{
-      text-decoration:none;color:var(--ink-700);font-weight:600;
-      padding:8px 10px;border-radius:10px;transition:.25s;
+      text-decoration:none; color:var(--ink-700); font-weight:600;
+      padding:.55rem .7rem; border-radius:10px; transition:.25s;
     }
-    .menu a:hover{color:var(--brand-700);background:rgba(15,76,92,.08)}
-    .cta{
-      background:linear-gradient(135deg,var(--accent),#ffc64d);
-      color:#1f2937;border:none;padding:10px 16px;border-radius:14px;
-      font-weight:800;cursor:pointer;box-shadow:0 8px 20px rgba(255,209,102,.35);
-      transition:transform .2s ease, box-shadow .2s ease;
-    }
-    .cta:hover{transform:translateY(-2px);box-shadow:0 12px 26px rgba(255,209,102,.45)}
-    .burger{display:none;gap: 6px;flex-direction:column;margin-left:10px}
-    .burger span{width:26px;height:3px;background:var(--brand-700);border-radius:4px}
+    .menu a:hover{color:var(--brand-700); background:rgba(15,76,92,.08)}
 
-    /* ------- MOBILE ------- */
-    @media (max-width:860px){
+    /* hambúrguer */
+    .burger{
+      display:none; width:44px; height:44px; border:1px solid rgba(15,76,92,.15);
+      border-radius:12px; background:#fff; place-items:center; cursor:pointer;
+    }
+    .burger-bars{position:relative; width:22px; height:2px; background:var(--brand-700); border-radius:2px; transition:.2s}
+    .burger-bars::before, .burger-bars::after{
+      content:""; position:absolute; left:0; width:22px; height:2px; background:var(--brand-700); border-radius:2px; transition:.2s;
+    }
+    .burger-bars::before{top:-7px}
+    .burger-bars::after{top:7px}
+    .burger.open .burger-bars{background:transparent}
+    .burger.open .burger-bars::before{top:0; transform:rotate(45deg)}
+    .burger.open .burger-bars::after{top:0; transform:rotate(-45deg)}
+
+    /* overlay */
+    .overlay{
+      position:fixed; inset:0; background:rgba(0,0,0,.45);
+      opacity:0; visibility:hidden; transition:.25s; z-index:210;
+    }
+    .overlay.show{opacity:1; visibility:visible}
+
+    /* ========= Mobile / Tablet ========= */
+    @media (max-width: 900px){
+      :root{ --nav-h:56px; }
+      .container{padding:0 16px}
       .brand img{width:140px}
-      .nav-inner{padding:8px}
+      .menu{display:block} /* base para off-canvas */
 
-      /* esconde CTA de topo no mobile */
-      .cta{display:none}
-
-      /* menu vira off-canvas pela direita */
+      /* off-canvas */
       .menu{
-        display:block;
-        position:fixed;
-        top:60px; right:0; bottom:0;
-        width:78%; max-width:360px;
-        /* background:#fff; */
-        /* border-left:1px solid rgba(15,76,92,.1); */
-        /* box-shadow:-12px 0 30px rgba(0,0,0,.08); */
-        padding:18px;
-        transform:translateX(100%);
-        transition: transform .15s ease;
-        z-index:120;
+        position:fixed; top:0; right:0;
+        height:100dvh; /* usa dynamic viewport quando disponível */
+        width:min(420px,84vw);
+        padding:calc(var(--nav-h) + 8px) 20px 20px;
+        background:#ffffff; border-left:1px solid rgba(15,76,92,.1);
+        box-shadow:-12px 0 30px rgba(0,0,0,.08);
+        transform:translateX(100%); transition:transform .25s ease; z-index:220;
+        overflow:auto; -webkit-overflow-scrolling:touch;
+        padding-bottom:calc(20px + env(safe-area-inset-bottom));
       }
       .menu.open{transform:translateX(0)}
-      .menu a{display:block;padding:12px 8px;border-radius:12px;margin-bottom:6px}
+      .menu a{display:block; padding:14px 10px; margin-bottom:6px; border-radius:12px}
 
-      .burger{display:flex}
-    }
-
-    /* CTA flutuante (apenas mobile) */
-    .sticky-cta{display:none}
-    @media (max-width:860px){
-      .sticky-cta{
-        display:flex; align-items:center; justify-content:center;
-        position: fixed; left:16px; right:16px; bottom:16px; z-index:110;
-        background:linear-gradient(135deg,var(--accent),#ffc64d);
-        color:#1f2937; font-weight:900; border-radius:16px; padding:14px 18px;
-        box-shadow:0 14px 30px rgba(255,209,102,.45);
-        text-decoration:none;
-      }
+      .burger{display:grid}
+      /* remove CTA do topo no mobile (não usamos mais) */
     }
 
     /* ========= HERO ========= */
     .hero{
-      position:relative;overflow:hidden;
       background: linear-gradient(120deg, var(--brand-700) 0%, var(--brand-600) 45%, var(--brand-500) 100%);
-      color:#fff;
+      color:#fff; overflow:hidden;
     }
-    .hero-wrap{display:grid;grid-template-columns:1.2fr .8fr; gap:30px; padding:10px 3px}
-    @media (max-width:860px){ .hero-wrap{grid-template-columns:1fr} }
+    .hero-wrap{
+      display:grid; grid-template-columns:1.2fr .8fr; gap:30px;
+      padding: clamp(28px, 5vw, 60px) 10px;
+    }
+    @media (max-width: 900px){ .hero-wrap{grid-template-columns:1fr} }
     .hero h1{
-      font-size:clamp(28px,3.4vw,46px); line-height:1.12; margin:8px 0 14px;
-      text-shadow:0 4px 22px rgba(0,0,0,.25);
+      font-size:clamp(26px, 6vw, 44px);
+      line-height:1.15; margin:8px 0 14px; text-shadow:0 4px 22px rgba(0,0,0,.25);
     }
-    .hero p{color:#e9f6f7;max-width:56ch}
-    .hero .buttons{display:flex;gap:12px;margin-top:14px;flex-wrap:wrap}
-    .hero .ghost{
-      background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.25);
-      padding:10px 16px;border-radius:12px;font-weight:700;text-decoration:none;transition:.25s;
+    .hero p{color:#e9f6f7; max-width:58ch}
+    .hero .buttons{display:flex; gap:12px; margin-top:14px; flex-wrap:wrap}
+    .ghost{
+      background:rgba(255,255,255,.12); color:#fff; border:1px solid rgba(255,255,255,.25);
+      padding:10px 16px; border-radius:12px; font-weight:700; text-decoration:none; transition:.25s;
     }
-    .hero .ghost:hover{background:rgba(255,255,255,.22)}
+    .ghost:hover{background:rgba(255,255,255,.22)}
     .hero-art{
-      position:relative;min-height:290px;border-radius:var(--radius);
-      background: radial-gradient(120px 120px at 18% 28%, rgba(255,255,255,.22), transparent),
-                  radial-gradient(140px 140px at 78% 58%, rgba(255,255,255,.18), transparent),
-                  rgba(255,255,255,.06);
+      position:relative; min-height:280px; border-radius:var(--radius);
+      background:
+        radial-gradient(120px 120px at 18% 28%, rgba(255,255,255,.22), transparent),
+        radial-gradient(140px 140px at 78% 58%, rgba(255,255,255,.18), transparent),
+        rgba(255,255,255,.06);
       box-shadow:var(--shadow); border:1px solid rgba(255,255,255,.18);
-      display:flex;align-items:center;justify-content:center;
+      display:flex; align-items:center; justify-content:center;
     }
     .diamond{
-      display:inline-flex;align-items:center;gap:12px;background:rgba(255,255,255,.12);
-      border:1px solid rgba(255,255,255,.25);padding:10px 14px;border-radius:999px;
-      position:absolute;bottom:18px;right:18px;backdrop-filter:blur(6px);
-      animation:pop .6s ease-out .2s both;
+      display:inline-flex; align-items:center; gap:12px; background:rgba(255,255,255,.12);
+      border:1px solid rgba(255,255,255,.25); padding:10px 14px; border-radius:999px;
+      position:absolute; bottom:18px; right:18px; backdrop-filter:blur(6px);
     }
     .sparkle{filter:drop-shadow(0 0 10px rgba(255,209,102,.9)); animation:shine 2.8s linear infinite}
-    @keyframes shine{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}
-    @keyframes pop{from{transform:scale(.85);opacity:0}to{transform:scale(1);opacity:1}}
+    @keyframes shine{to{transform:rotate(360deg)}}
 
-    /* ========= SEÇÕES ========= */
-    section{padding:72px 0}
-    .section-title{
-      font-size:clamp(22px,2.6vw,36px); margin:0 0 12px; color:var(--brand-800)
-    }
+    /* ========= Seções ========= */
+    section{padding: clamp(44px, 8vw, 72px) 0}
+    .section-title{font-size:clamp(22px, 4.8vw, 36px); margin:0 0 12px; color:var(--brand-800)}
     .lead{color:var(--ink-700); max-width:70ch}
 
     .grid-3{display:grid; grid-template-columns:repeat(3,1fr); gap:22px}
@@ -160,71 +155,65 @@
     @media (max-width:620px){.grid-3{grid-template-columns:1fr}}
 
     .card{
-      background:#fff;border-radius:var(--radius);padding:18px 18px 20px;
+      background:#fff; border-radius:var(--radius); padding:18px 18px 20px;
       box-shadow:var(--shadow); border:1px solid rgba(15,76,92,.08);
       transition:transform .25s ease, box-shadow .25s ease;
     }
     .card:hover{transform:translateY(-6px); box-shadow:0 14px 40px rgba(0,0,0,.18)}
     .card h3{margin:10px 0 8px; color:var(--brand-700)}
     .icon{
-      width:44px;height:44px;border-radius:10px;display:grid;place-items:center;
+      width:44px; height:44px; border-radius:10px; display:grid; place-items:center;
       background:linear-gradient(135deg,rgba(15,76,92,.08),rgba(29,120,116,.12)); color:var(--brand-700)
     }
 
     /* Processo */
-    .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+    .steps{display:grid; grid-template-columns:repeat(4,1fr); gap:16px}
     @media (max-width:980px){.steps{grid-template-columns:repeat(2,1fr)}}
     @media (max-width:620px){.steps{grid-template-columns:1fr}}
-    .step{position:relative;padding:18px;border-radius:var(--radius);background:#fff;border:1px solid rgba(15,76,92,.08);box-shadow:var(--shadow)}
-    .badge{display:inline-block;background:var(--brand-700);color:#fff;border-radius:999px;font-size:12px;font-weight:800;padding:6px 10px}
+    .step{padding:18px; border-radius:var(--radius); background:#fff; border:1px solid rgba(15,76,92,.08); box-shadow:var(--shadow)}
+    .badge{display:inline-block; background:var(--brand-700); color:#fff; border-radius:999px; font-size:12px; font-weight:800; padding:6px 10px}
 
     /* Counters */
-    .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+    .stats{display:grid; grid-template-columns:repeat(4,1fr); gap:18px}
     @media (max-width:980px){.stats{grid-template-columns:repeat(2,1fr)}}
     @media (max-width:620px){.stats{grid-template-columns:1fr}}
-    .stat{background:#fff;border-radius:var(--radius);padding:22px;border:1px solid rgba(15,76,92,.08);box-shadow:var(--shadow);text-align:center}
-    .stat .num{font-size:clamp(26px,3.2vw,40px);font-weight:900;color:var(--brand-700)}
+    .stat{background:#fff; border-radius:var(--radius); padding:22px; border:1px solid rgba(15,76,92,.08); box-shadow:var(--shadow); text-align:center}
+    .stat .num{font-size:clamp(26px, 6vw, 40px); font-weight:900; color:var(--brand-700)}
     .muted{color:var(--ink-500)}
 
-    /* Clientes / Depoimento */
-    .clients{display:grid;grid-template-columns:1.2fr .8fr; gap:22px}
+    /* Clientes/Depoimento */
+    .clients{display:grid; grid-template-columns:1.2fr .8fr; gap:22px}
     @media (max-width:900px){.clients{grid-template-columns:1fr}}
-    .quote{background:linear-gradient(180deg, #ffffff, #f4fafb);border-left:6px solid var(--brand-700);padding:22px;border-radius:var(--radius);box-shadow:var(--shadow)}
+    .quote{background:linear-gradient(180deg, #ffffff, #f4fafb); border-left:6px solid var(--brand-700); padding:22px; border-radius:var(--radius); box-shadow:var(--shadow)}
 
     /* Contato */
-    .contact{
-      display:grid;grid-template-columns:1fr .9fr; gap:26px; align-items:start
-    }
+    .contact{display:grid; grid-template-columns:1fr .9fr; gap:26px; align-items:start}
     @media (max-width:960px){.contact{grid-template-columns:1fr}}
-    .form{
-      background:#fff;padding:18px;border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid rgba(15,76,92,.08)
-    }
-    .row{display:grid;grid-template-columns:1fr 1fr; gap:12px}
+    .form{background:#fff; padding:18px; border-radius:var(--radius); box-shadow:var(--shadow); border:1px solid rgba(15,76,92,.08)}
+    .row{display:grid; grid-template-columns:1fr 1fr; gap:12px}
     @media (max-width:620px){.row{grid-template-columns:1fr}}
-    label{display:block;font-weight:700;margin:8px 0 6px;color:var(--brand-800)}
-    input,textarea{
-      width:100%;border:1px solid #d8e4e6;background:#fbfeff;padding:12px;border-radius:10px;font:inherit;
-    }
-    textarea{min-height:120px;resize:vertical}
+    label{display:block; font-weight:700; margin:8px 0 6px; color:var(--brand-800)}
+    input,textarea{width:100%; border:1px solid #d8e4e6; background:#fbfeff; padding:12px; border-radius:10px; font:inherit}
+    textarea{min-height:120px; resize:vertical}
     .btn{
       background:linear-gradient(135deg,var(--brand-700),var(--brand-500));
-      color:#fff;border:none;padding:12px 18px;border-radius:12px;font-weight:800;cursor:pointer;
+      color:#fff; border:none; padding:12px 18px; border-radius:12px; font-weight:800; cursor:pointer;
       box-shadow:0 10px 24px rgba(15,76,92,.35); transition:transform .2s ease, box-shadow .2s ease;
     }
-    .btn:hover{transform:translateY(-2px);box-shadow:0 14px 28px rgba(15,76,92,.45)}
-    .whatsapp{
-      background:linear-gradient(135deg,#25d366,#1ebe57); box-shadow:0 10px 24px rgba(37,211,102,.35)
-    }
+    .btn:hover{transform:translateY(-2px); box-shadow:0 14px 28px rgba(15,76,92,.45)}
+    .whatsapp{background:linear-gradient(135deg,#25d366,#1ebe57); box-shadow:0 10px 24px rgba(37,211,102,.35)}
 
     /* Footer */
-    footer{
-      background:linear-gradient(180deg, var(--brand-800), var(--brand-900));
-      color:#cfe7ea; padding:28px 0; text-align:center; margin-top:30px
-    }
+    footer{background:linear-gradient(180deg, var(--brand-800), var(--brand-900)); color:#cfe7ea; text-align:center; padding:28px 0; margin-top:30px}
 
     /* Reveals */
     .reveal{opacity:0; transform:translateY(16px); transition:opacity .7s ease, transform .7s ease}
     .reveal.on{opacity:1; transform:none}
+
+    /* Acessibilidade: reduz animações */
+    @media (prefers-reduced-motion: reduce){
+      *{animation:none !important; transition:none !important}
+    }
   </style>
 </head>
 <body>
@@ -235,7 +224,9 @@
       <a class="brand" href="#top" aria-label="Doc Transparente - Início">
         <img src="logo.png" alt="Logo Doc Transparente">
       </a>
-      <nav class="menu" id="menu">
+
+      <!-- menu (o link Contato fica aqui; sem botão “Fale com a gente”) -->
+      <nav class="menu" id="menu" aria-label="Menu principal">
         <a href="#sobre">Sobre</a>
         <a href="#servicos">Serviços</a>
         <a href="#processo">Processo</a>
@@ -244,23 +235,22 @@
         <a href="#clientes">Clientes</a>
         <a href="#contato">Contato</a>
       </nav>
-      <button class="cta" onclick="document.getElementById('contato').scrollIntoView({behavior:'smooth'})">Fale com a gente</button>
-      <button class="burger" aria-label="Abrir menu" aria-expanded="false" aria-controls="menu" id="burger">
-        <span></span><span></span><span></span>
+
+      <!-- hambúrguer -->
+      <button class="burger" id="burger" aria-label="Abrir menu" aria-controls="menu" aria-expanded="false">
+        <span class="burger-bars"></span>
       </button>
     </div>
   </div>
 
-  <!-- CTA FLUTUANTE (mobile) -->
-  <a class="sticky-cta" href="#contato" aria-label="Fale com a Doc Transparente">
-    Fale com a gente
-  </a>
+  <!-- overlay do off-canvas -->
+  <div class="overlay" id="overlay" aria-hidden="true"></div>
 
   <!-- HERO -->
   <header class="hero" id="top">
     <div class="container hero-wrap">
-      <div style="padding: 10px;">
-        <p class="badge" style="background:rgba(255,255,255,.22);border:1px solid rgba(255,255,255,.35)">Especialistas em Portais de Transparência</p>
+      <div>
+        <p class="badge" style="display:inline-block;background:rgba(255,255,255,.22);border:1px solid rgba(255,255,255,.35);padding:.35rem .7rem;border-radius:999px;font-weight:800">Especialistas em Portais de Transparência</p>
         <h1>Transparência que gera confiança para prefeituras e câmaras</h1>
         <p>Publicação e gestão completa de documentos oficiais, com atualização contínua, padronização e foco total na usabilidade — para que o cidadão encontre o que precisa em poucos cliques.</p>
         <div class="buttons">
@@ -269,9 +259,8 @@
         </div>
       </div>
 
-      <div class="hero-art">
-        <!-- Ícone / ilustração inline -->
-        <svg width="170" height="170" viewBox="0 0 256 256" fill="none" aria-hidden="true">
+      <div class="hero-art" aria-hidden="true">
+        <svg width="170" height="170" viewBox="0 0 256 256" fill="none">
           <rect x="22" y="22" width="140" height="180" rx="12" stroke="white" stroke-opacity=".9" stroke-width="8"/>
           <rect x="40" y="56" width="104" height="16" rx="8" fill="white" fill-opacity=".9"/>
           <rect x="40" y="92" width="104" height="16" rx="8" fill="white" fill-opacity=".85"/>
@@ -280,9 +269,7 @@
           <line x1="226" y1="192" x2="248" y2="214" stroke="white" stroke-width="12" stroke-linecap="round" />
         </svg>
         <div class="diamond">
-          <svg class="sparkle" width="22" height="22" viewBox="0 0 24 24" fill="#ffd166" aria-hidden="true">
-            <path d="M12 2l2.2 5.1L19 9.2l-4.1 2 1.1 4.6L12 13.9 8 15.8 9.1 11 5 9.2l4.8-2.1L12 2z"/>
-          </svg>
+          <svg class="sparkle" width="22" height="22" viewBox="0 0 24 24" fill="#ffd166"><path d="M12 2l2.2 5.1L19 9.2l-4.1 2 1.1 4.6L12 13.9 8 15.8 9.1 11 5 9.2l4.8-2.1L12 2z"/></svg>
           <strong>Selo Diamante</strong>
         </div>
       </div>
@@ -302,44 +289,32 @@
       <p class="lead">Soluções sob medida para sua prefeitura ou câmara municipal.</p>
       <div class="grid-3">
         <div class="card reveal">
-          <div class="icon">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 3h14a2 2 0 0 1 2 2v13l-4-3H6a2 2 0 0 1-2-2V3z"/></svg>
-          </div>
+          <div class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M4 3h14a2 2 0 0 1 2 2v13l-4-3H6a2 2 0 0 1-2-2V3z"/></svg></div>
           <h3>Atualização Contínua</h3>
           <p>Publicação diária de diários oficiais, atos, relatórios e demais documentos — com organização por data, tipo e secretaria.</p>
         </div>
         <div class="card reveal">
-          <div class="icon">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5h18v2H3zm0 6h12v2H3zm0 6h18v2H3z"/></svg>
-          </div>
+          <div class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M3 5h18v2H3zm0 6h12v2H3zm0 6h18v2H3z"/></svg></div>
           <h3>Padronização & Usabilidade</h3>
           <p>Estruturas de navegação claras, busca facilitada e arquivos nomeados de forma consistente, reduzindo atritos para o cidadão.</p>
         </div>
         <div class="card reveal">
-          <div class="icon">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 1 1-7.07 2.93A10 10 0 0 1 12 2zm-1 5h2v6h-2zm0 8h2v2h-2z"/></svg>
-          </div>
+          <div class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 1-7.07 2.93A10 10 0 0 1 12 2zm-1 5h2v6h-2zm0 8h2v2h-2z"/></svg></div>
           <h3>Melhorias Técnicas</h3>
           <p>Otimizações de performance, acessibilidade e SEO para portais mais rápidos, modernos e fáceis de manter.</p>
         </div>
         <div class="card reveal">
-          <div class="icon">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 7l5 10H7z"/></svg>
-          </div>
+          <div class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 7l5 10H7z"/></svg></div>
           <h3>Monitoramento & Relatórios</h3>
           <p>Dashboards e relatórios periódicos de publicações, com indicadores de atualização e evidências de entrega.</p>
         </div>
         <div class="card reveal">
-          <div class="icon">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 6h16v12H4z"/><path d="M9 10h6v2H9z" fill="#fff"/></svg>
-          </div>
+          <div class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M4 6h16v12H4z"/><path d="M9 10h6v2H9z" fill="#fff"/></svg></div>
           <h3>Higienização de Acervo</h3>
           <p>Revisão de arquivos, correção de duplicidades, organização de pastas e padronização de nomenclaturas.</p>
         </div>
         <div class="card reveal">
-          <div class="icon">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 12l8-5v10l-8 5-8-5V7z"/></svg>
-          </div>
+          <div class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12l8-5v10l-8 5-8-5V7z"/></svg></div>
           <h3>Capacitação</h3>
           <p>Treinamos equipes internas para manter o portal atualizado com boas práticas e fluxos eficientes.</p>
         </div>
@@ -358,35 +333,24 @@
     </div>
   </section>
 
-  <!-- MISSÃO / VISÃO / VALORES -->
+  <!-- MVV -->
   <section id="mvv">
     <div class="container">
       <h2 class="section-title">Missão, Visão e Valores</h2>
       <div class="grid-3">
-        <div class="card reveal">
-          <h3>Missão</h3>
-          <p>Facilitar o acesso à informação pública com precisão, agilidade e clareza, fortalecendo a confiança entre administração e cidadãos.</p>
-        </div>
-        <div class="card reveal">
-          <h3>Visão</h3>
-          <p>Ser referência nacional em soluções de transparência digital para governos locais, unindo excelência operacional e inovação responsável.</p>
-        </div>
-        <div class="card reveal">
-          <h3>Valores</h3>
+        <div class="card reveal"><h3>Missão</h3><p>Facilitar o acesso à informação pública com precisão, agilidade e clareza, fortalecendo a confiança entre administração e cidadãos.</p></div>
+        <div class="card reveal"><h3>Visão</h3><p>Ser referência nacional em soluções de transparência digital para governos locais, unindo excelência operacional e inovação responsável.</p></div>
+        <div class="card reveal"><h3>Valores</h3>
           <ul style="padding-left:18px; margin:0">
-            <li>Ética e Integridade</li>
-            <li>Transparência Radical</li>
-            <li>Excelência e Agilidade</li>
-            <li>Foco no Cidadão</li>
-            <li>Segurança da Informação</li>
-            <li>Inovação Contínua</li>
+            <li>Ética e Integridade</li><li>Transparência Radical</li><li>Excelência e Agilidade</li>
+            <li>Foco no Cidadão</li><li>Segurança da Informação</li><li>Inovação Contínua</li>
           </ul>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- RESULTADOS (Counters) -->
+  <!-- RESULTADOS -->
   <section id="resultados" class="container reveal">
     <h2 class="section-title">Resultados em Números</h2>
     <p class="lead">Indicadores que refletem nosso compromisso com qualidade e consistência.</p>
@@ -405,7 +369,7 @@
         <h3 style="margin-top:0;color:var(--brand-700)">Clientes & Parcerias</h3>
         <ul style="padding-left:18px;margin:10px 0 0">
           <li><strong>Prefeitura parceira com Selo Diamante</strong> — reconhecimento pela excelência alcançada em conjunto.</li>
-          <li><strong>Câmara Municipal de São Miguel do Tocantins</strong> — gestão e atualização contínua do portal institucional e da transparência.</li>
+          <li><strong>Câmara</strong> — gestão e atualização contínua do portal institucional e da transparência.</li>
           <li>Outras prefeituras e câmaras em expansão — modelo replicável e eficiente.</li>
         </ul>
       </div>
@@ -418,28 +382,20 @@
 
   <!-- CONTATO -->
   <section id="contato" class="container reveal">
-    <h2 class="section-title">Fale com a gente</h2>
+    <h2 class="section-title">Contato</h2>
     <div class="contact">
       <div class="form">
         <div class="row">
-          <div>
-            <label for="nome">Nome</label>
-            <input id="nome" type="text" placeholder="Seu nome" />
-          </div>
-          <div>
-            <label for="orgao">Órgão / Entidade</label>
-            <input id="orgao" type="text" placeholder="Prefeitura, Câmara, etc." />
-          </div>
+          <div><label for="nome">Nome</label><input id="nome" type="text" placeholder="Seu nome" /></div>
+          <div><label for="orgao">Órgão / Entidade</label><input id="orgao" type="text" placeholder="Prefeitura, Câmara, etc." /></div>
         </div>
-        <label for="email">E-mail</label>
-        <input id="email" type="email" placeholder="seuemail@org.br" />
-        <label for="msg">Mensagem</label>
-        <textarea id="msg" placeholder="Conte rapidamente sua necessidade"></textarea>
+        <label for="email">E-mail</label><input id="email" type="email" placeholder="seuemail@org.br" />
+        <label for="msg">Mensagem</label><textarea id="msg" placeholder="Conte rapidamente sua necessidade"></textarea>
         <div style="display:flex;gap:10px;margin-top:12px;flex-wrap:wrap">
           <button class="btn" onclick="enviarEmail()">Enviar por E-mail</button>
           <a class="btn whatsapp" href="https://wa.me/5563984207027?text=Ol%C3%A1%20Doc%20Transparente!%20Quero%20falar%20sobre%20o%20portal%20da%20transpar%C3%AAncia." target="_blank" rel="noopener">Chamar no WhatsApp</a>
         </div>
-        <p style="margin-top:10px" class="muted">
+        <p class="muted" style="margin-top:10px">
           Ou entre em contato diretamente:<br>
           <strong>E-mail:</strong> <a href="mailto:doctransparencia97@gmail.com">doctransparencia97@gmail.com</a> &nbsp;|&nbsp;
           <strong>Telefone:</strong> <a href="tel:+5563984207027">(63) 98420-7027</a>
@@ -469,18 +425,31 @@
   </footer>
 
   <script>
-    // Menu mobile
+    // Off-canvas: abre/fecha com overlay, ESC, redimensionamento
     const burger = document.getElementById('burger');
     const menu = document.getElementById('menu');
-    burger?.addEventListener('click', () => {
-      const open = menu.classList.toggle('open');
-      burger.setAttribute('aria-expanded', open ? 'true' : 'false');
-    });
+    const overlay = document.getElementById('overlay');
+    const mq = window.matchMedia('(max-width: 900px)');
 
-    // Fecha o menu ao clicar em um link
-    menu?.querySelectorAll('a').forEach(a => {
-      a.addEventListener('click', () => menu.classList.remove('open'));
-    });
+    function setExpanded(open){
+      menu.classList.toggle('open', open);
+      overlay.classList.toggle('show', open);
+      document.body.classList.toggle('no-scroll', open);
+      burger.classList.toggle('open', open);
+      burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
+    function toggleMenu(force){ setExpanded(force ?? !menu.classList.contains('open')); }
+
+    burger?.addEventListener('click', ()=>toggleMenu());
+    overlay?.addEventListener('click', ()=>toggleMenu(false));
+    document.addEventListener('keydown', e => { if(e.key === 'Escape') toggleMenu(false); });
+
+    // fecha ao clicar em um link
+    menu?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => toggleMenu(false)));
+
+    // fecha se sair do breakpoint (evita bug ao virar o celular)
+    mq.addEventListener?.('change', () => toggleMenu(false));
+    window.addEventListener('resize', ()=>{ if(!mq.matches) toggleMenu(false); });
 
     // Ano dinâmico
     const y = new Date().getFullYear();
@@ -489,36 +458,27 @@
 
     // Reveal on scroll
     const io = new IntersectionObserver((entries)=>{
-      entries.forEach(e=>{
-        if(e.isIntersecting){ e.target.classList.add('on'); io.unobserve(e.target); }
-      });
+      entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('on'); io.unobserve(e.target); }});
     }, {threshold:.12});
     document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 
-    // Contadores
+    // Contadores (animam quando entram na tela)
     const runCounter = (el)=>{
-      const target = +el.dataset.target;
-      const speed = 18; // ms
-      let curr = 0;
-      const step = Math.max(1, Math.ceil(target/110));
-      const tick = ()=> {
-        curr += step;
-        if(curr >= target) { el.textContent = target; }
-        else { el.textContent = curr; setTimeout(tick, speed); }
-      };
-      tick();
+      const target = +el.dataset.target, speed = 18;
+      let curr = 0, step = Math.max(1, Math.ceil(target/110));
+      (function tick(){ curr += step; el.textContent = curr >= target ? target : curr; if(curr < target) setTimeout(tick, speed) })();
     };
     const io2 = new IntersectionObserver((entries)=>{
       entries.forEach(e=>{ if(e.isIntersecting){ runCounter(e.target.querySelector('.num')); io2.unobserve(e.target); }});
     }, {threshold:.2});
     document.querySelectorAll('.stat').forEach(s=>io2.observe(s));
 
-    // Enviar "formulário" por e-mail (mailto com preenchimento)
+    // Enviar por mailto
     function enviarEmail(){
       const nome = encodeURIComponent(document.getElementById('nome').value || '');
-      const org = encodeURIComponent(document.getElementById('orgao').value || '');
-      const email = encodeURIComponent(document.getElementById('email').value || '');
-      const msg = encodeURIComponent(document.getElementById('msg').value || '');
+      const org  = encodeURIComponent(document.getElementById('orgao').value || '');
+      const email= encodeURIComponent(document.getElementById('email').value || '');
+      const msg  = encodeURIComponent(document.getElementById('msg').value || '');
       const assunto = `Contato — Doc Transparente`;
       const corpo =
         `Nome: ${decodeURIComponent(nome)}%0D%0A`+
